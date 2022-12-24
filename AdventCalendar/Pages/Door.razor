@@ -1,0 +1,25 @@
+﻿@page "/{day:int}"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+<PageTitle>Buone Feste!</PageTitle>
+<h1>@Day</h1>
+@code {
+	[Parameter]
+	public int Day { get; set; }
+	bool showImage = false;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		DateTime today = DateTime.Now;
+		if (today.Day < Day || today.Month != 12)
+		{
+			await JS.InvokeVoidAsync("alert", $"Hey! It's not December {Day}, yet");
+			NavigationManager.NavigateTo("/");
+		}
+		else
+		{
+			showImage = true;
+		}
+
+	}
+}
